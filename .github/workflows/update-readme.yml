@@ -10,9 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
       - name: Fetch latest posts
         run: |
-          curl -s https://onlinepdfeditorhub.blogspot.com/feeds/posts/default?alt=json \
+          curl -s "https://onlinepdfeditorhub.blogspot.com/feeds/posts/default?alt=json&max-results=10" \
           | jq -r '.feed.entry[] | "- [\(.title.$t)](\(.link[] | select(.rel == "alternate") | .href))"' \
           > latest-tools.txt
       - name: Update README
@@ -26,5 +28,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git commit -m "auto-update: latest tools from RSS" || exit 0
+          git commit -m "auto-update: latest tools from RSS" || echo "No changes"
           git push
