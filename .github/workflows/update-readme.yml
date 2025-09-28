@@ -1,10 +1,8 @@
 name: Update README from Blogger RSS
-
 on:
   schedule:
     - cron: '0 6 * * *'   # daily 06:00 UTC
   workflow_dispatch:      # manual trigger
-
 jobs:
   update:
     runs-on: ubuntu-latest
